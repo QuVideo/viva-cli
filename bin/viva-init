@@ -1,0 +1,65 @@
+#!/usr/bin/env node
+
+const inquirer = require('inquirer')
+const shell = require('shelljs')
+const path = require('path')
+const fs = require('fs')
+
+console.log('viva-init was powered by laziness.')
+
+const name = process.argv[2]
+
+const questions = [{
+  type: 'input',
+  name: 'version',
+  message: 'version',
+  default: '1.0.0'
+}, {
+  type: 'input',
+  name: 'description',
+  message: 'description',
+  default: 'A react demo.'
+}, {
+  type: 'input',
+  name: 'author',
+  message: 'author',
+  default: 'anonymity'
+}, {
+  type: 'input',
+  name: 'license',
+  message: 'license',
+  default: 'MIT'
+}]
+
+if (!name) {
+  questions.unshift({
+    type: 'input',
+    name: 'name',
+    message: 'project-name'
+  })
+}
+
+inquirer.prompt(questions).then(function (answers) {
+  const projectName = answers.name || name
+  shell.mkdir('-p', projectName)
+  shell.exec(`git clone git@github.com:QuVideo/vivia-react-template.git ${path.resolve(process.cwd(), `./${projectName}`)}`, function (code) {
+    if (code !== 0) return
+    shell.rm('-rf', path.resolve(process.cwd(), `./${projectName}/.git`))
+    const packagePath = path.resolve(process.cwd(), `./${projectName}/package.json`)
+    const package = require(packagePath)
+    package.name = projectName
+    package.version = answers.version
+    package.description = answers.description
+    package.author = answers.author
+    package.license = answers.license
+
+    const stream = fs.createWriteStream(packagePath)
+    stream.write(JSON.stringify(package, null, 2))
+    stream.on('error', function (err) {
+      console.err(err)
+    })
+    stream.end(function() {
+      console.log('create success!')
+    })
+  })
+})

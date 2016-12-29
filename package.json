@@ -1,0 +1,29 @@
+{
+  "name": "viva-cli",
+  "version": "1.0.0",
+  "description": "Simple CLI for scaffolding React.js projects",
+  "main": "index.js",
+  "bin": {
+    "viva-init": "bin/viva-init"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuVideo/viva-cli.git"
+  },
+  "keywords": [
+    "scaffold"
+  ],
+  "author": "XueSeason",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/QuVideo/viva-cli/issues"
+  },
+  "homepage": "https://github.com/QuVideo/viva-cli#readme",
+  "dependencies": {
+    "inquirer": "^2.0.0",
+    "shelljs": "^0.7.5"
+  }
+}
